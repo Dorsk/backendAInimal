@@ -6,15 +6,42 @@
       <link rel="stylesheet" type="text/css" th:href="@{/css/style.css}"/>
    </head>
    <body>
-      <h1>Welcome</h1>  
-      <!--  
-      
-         In Thymeleaf the equivalent of
-         JSP's ${pageContext.request.contextPath}/edit.html
-         would be @{/edit.html}
-         
-         -->
-           
+
+         <div class="row">
+	         <!--  Div LEFT SIDE -->
+	         <div class="column1"> 
+	         	<div id="object1"><h1>Active Learner</h1></div>
+    			<div id="object2">Lorem ipsum dolor sit amet, consectetur <br /> 
+    				adipiscing elit, sed do eiusmod tempor <br /> 
+    				incididunt ut labore et dolore magna aliqua.<br /> 
+					Ut enim ad minim veniam, quis nostrud <br /> 
+					exercitation ullamco laboris nisi ut aliquip
+				</div>
+	         </div>
+	         
+	         <!--  Div RIGHT SIDE with FORM -->
+	         <div class="column2">
+	         	<div>Chargez vos images<br /> 
+					et saisissez les labels à rechercher  <br /> 
+				</div>
+				<div>2 labels min. 10 max. </div>
+				
+		         <form th:action="@{/upload}" method="post" enctype="multipart/form-data">
+				 	<label>Image : </label>
+		    		<input type="file" name="image" accept="image/png, image/jpeg" />
+		    		<div>
+		        		<label> Label 1</label>
+		        		<input type="text"   placeholder="string" /> <!-- th:field="*{label1}"  -->
+		   			 </div>
+		   			 <div>
+		        		<label> Label 2</label>
+		        		<input type="text"   placeholder="string" /> <!-- th:field="*{label2}"  -->
+		   			 </div>
+		    
+		         	<button type="submit" class="btn btn-primary">Upload File</button>
+				 </form>
+	 		</div>	
+	 	</div>
    </body>
    
 </html>

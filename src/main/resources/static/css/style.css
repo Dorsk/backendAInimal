@@ -1,1 +1,21 @@
 @charset "ISO-8859-1";
+.column1 {
+	float: left;
+	width: 30%;
+	height:100vh;
+	background: linear-gradient(31.75deg, #845EC2 -1.86%, #2C73D2 44.37%, #00A4DE 97.18%);
+}
+
+.column2 {
+	float: left;
+	width: 70%;
+	height:100vh;
+}
+
+/* Clear floats after the columns */
+.row:after {
+	content: "";
+	display: table;
+	clear: both;
+	height:100vh;
+}
