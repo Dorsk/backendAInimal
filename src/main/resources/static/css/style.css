@@ -1,4 +1,11 @@
 @charset "ISO-8859-1";
+
+body {
+    display: block;
+    margin: 0px;
+}
+
+
 .column1 {
 	float: left;
 	width: 30%;
@@ -8,6 +15,8 @@
 
 .column2 {
 	float: left;
+	margin-left: auto;
+    margin-right: auto;
 	width: 70%;
 	height:100vh;
 }
@@ -17,5 +26,6 @@
 	content: "";
 	display: table;
 	clear: both;
-	height:100vh;
 }
+
+
