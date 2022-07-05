@@ -8,6 +8,7 @@ class AinimalsApplicationTests {
 
 	@Test
 	void contextLoads() {
+		System.out.println("Context chargé");
 	}
 
 }
