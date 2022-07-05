@@ -49,12 +49,11 @@ public class ImagesAndLabelsController {
 	
 	/**
 	 * Home page 
-	 * récupération des images
-	 * @param label
+	 * récupération des images 
+	 * TODO : recuperer les libelles
+	 * @param image
 	 * @return 
-	 * @return
 	 */
-//	@RequestMapping(value = "/upload", method = RequestMethod.POST)
 	@PostMapping("/upload")
 	public RedirectView uploadImage(@RequestParam("image") MultipartFile multipartFile) {
 		
@@ -70,7 +69,7 @@ public class ImagesAndLabelsController {
         	System.out.println("Path new dir : " + uploadDir);
 			FileUploadUtils.saveFile(uploadDir, fileName, multipartFile);
 		} catch (IOException e) {
-			// TODO Auto-generated catch block
+			// TODO LOGGER
 			e.printStackTrace();
 		}
                 
