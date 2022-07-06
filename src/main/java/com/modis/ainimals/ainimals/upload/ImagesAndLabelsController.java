@@ -51,28 +51,32 @@ public class ImagesAndLabelsController {
 	 * Home page 
 	 * récupération des images 
 	 * TODO : recuperer les libelles
-	 * @param image
+	 * @param multipartFiles : images à upload
 	 * @return 
 	 */
 	@PostMapping("/upload")
-	public RedirectView uploadImage(@RequestParam("image") MultipartFile multipartFile) {
+	public RedirectView uploadImage(@RequestParam("files") MultipartFile [] multipartFiles) {
 		
-		// recuperation des images
-		String fileName = StringUtils.cleanPath(multipartFile.getOriginalFilename());
-       
-		// recuperation de la date actuelle pour faire un dossier pour les images qui sont upload
-		DateFormat dateFormat = new SimpleDateFormat("yyyy/MM/dd HH:mm:ss");
-		Calendar cal = Calendar.getInstance();
-        String uploadDir = context.getRealPath("user-photos");
-        uploadDir = uploadDir + File.separator + dateFormat.format(cal.getTime()).replace("/", "-").replace(" ", "_").replace(":", "-") + File.separator + "upload" + File.separator;
-        try {
-        	System.out.println("Path new dir : " + uploadDir);
-			FileUploadUtils.saveFile(uploadDir, fileName, multipartFile);
-		} catch (IOException e) {
-			// TODO LOGGER
-			e.printStackTrace();
+		if(multipartFiles.length > 0) {
+			// recuperation de la date actuelle pour faire un dossier pour les images qui sont upload
+			DateFormat dateFormat = new SimpleDateFormat("yyyy/MM/dd HH:mm:ss");
+			Calendar cal = Calendar.getInstance();
+	        String uploadDir = context.getRealPath("user-photos");
+	        uploadDir = uploadDir + File.separator + dateFormat.format(cal.getTime()).replace("/", "-").replace(" ", "_").replace(":", "-") + File.separator + "upload" + File.separator;
+			
+	        // recuperation des images
+			for (MultipartFile multipartFile : multipartFiles) {
+				String fileName = StringUtils.cleanPath(multipartFile.getOriginalFilename());
+		       
+		        try {
+		        	System.out.println("Path new dir : " + uploadDir);
+					FileUploadUtils.saveFile(uploadDir, fileName, multipartFile);
+				} catch (IOException e) {
+					// TODO LOGGER
+					e.printStackTrace();
+				}
+			}    
 		}
-                
          // redirection vers une autre page web
         return new RedirectView("/", true);
 	}

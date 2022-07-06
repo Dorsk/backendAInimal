@@ -28,14 +28,14 @@
 				
 		         <form th:action="@{/upload}" method="post" enctype="multipart/form-data">
 				 	<label>Image : </label>
-		    		<input type="file" name="image" accept="image/png, image/jpeg" />
+		    		<input type="file" name="files" th:multiple="multiple" accept="image/png, image/jpeg" />
 		    		<div>
 		        		<label> Label 1</label>
-		        		<input type="text"   placeholder="string" /> <!-- th:field="*{label1}"  -->
+		        		<input type="text" placeholder="string" /> <!-- th:field="*{label1}"  -->
 		   			 </div>
 		   			 <div>
 		        		<label> Label 2</label>
-		        		<input type="text"   placeholder="string" /> <!-- th:field="*{label2}"  -->
+		        		<input type="text" placeholder="string" /> <!-- th:field="*{label2}"  -->
 		   			 </div>
 		    
 		         	<button type="submit" class="btn btn-primary">Upload File</button>
