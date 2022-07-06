@@ -75,7 +75,8 @@ public class ImagesAndLabelsController {
 				String fileName = StringUtils.cleanPath(multipartFile.getOriginalFilename());
 		       
 		        try {
-		        	System.out.println("Path new dir : " + uploadDir);
+		        	System.out.println("-- Path Dir ----- : " + uploadDir);
+		        	System.out.println("-- File name ---- : " + fileName);
 					FileUploadUtil.saveFile(uploadDir, fileName, multipartFile);
 				} catch (IOException e) {
 					// TODO LOGGER
@@ -84,6 +85,7 @@ public class ImagesAndLabelsController {
 			}   
 			
 			// lancer le script python
+			
 		}
 		 // redirection vers une autre page web
         return new RedirectView("/", true);
