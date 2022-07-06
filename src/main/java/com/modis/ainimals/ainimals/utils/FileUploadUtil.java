@@ -9,7 +9,7 @@ import java.nio.file.StandardCopyOption;
 
 import org.springframework.web.multipart.MultipartFile;
 
-public class FileUploadUtils {
+public class FileUploadUtil {
 
 	/**
 	 *  sauvegarde les images dans un dossier

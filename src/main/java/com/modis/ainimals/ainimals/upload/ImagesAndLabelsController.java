@@ -24,7 +24,7 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.view.RedirectView;
 
-import com.modis.ainimals.ainimals.utils.FileUploadUtils;
+import com.modis.ainimals.ainimals.utils.FileUploadUtil;
 
 @RestController
 @ComponentScan({"com.modis.ainimals.ainimals.load"})
@@ -52,32 +52,40 @@ public class ImagesAndLabelsController {
 	 * récupération des images 
 	 * TODO : recuperer les libelles
 	 * @param multipartFiles : images à upload
+	 * @param multiple labels :  il peut y avoir de 2 à 10 labels
 	 * @return 
 	 */
 	@PostMapping("/upload")
-	public RedirectView uploadImage(@RequestParam("files") MultipartFile [] multipartFiles) {
+	public RedirectView uploadImage(@RequestParam("files") MultipartFile [] multipartFiles,
+			@RequestParam("label1") String sLabel1, @RequestParam("label2") String sLabel2, @RequestParam("label3") String sLabel3,
+			@RequestParam("label4") String sLabel4, @RequestParam("label5") String sLabel5, @RequestParam("label6") String sLabel6,
+			@RequestParam("label7") String sLabel7, @RequestParam("label8") String sLabel8, @RequestParam("label9") String sLabel9,
+			@RequestParam("label10") String sLabel10) {
 		
-		if(multipartFiles.length > 0) {
+		// bloquage si 0 image à upload
+		if(multipartFiles.length > 1 || (multipartFiles.length == 1 && !multipartFiles[0].getOriginalFilename().equals(""))) {
 			// recuperation de la date actuelle pour faire un dossier pour les images qui sont upload
 			DateFormat dateFormat = new SimpleDateFormat("yyyy/MM/dd HH:mm:ss");
 			Calendar cal = Calendar.getInstance();
 	        String uploadDir = context.getRealPath("user-photos");
 	        uploadDir = uploadDir + File.separator + dateFormat.format(cal.getTime()).replace("/", "-").replace(" ", "_").replace(":", "-") + File.separator + "upload" + File.separator;
 			
-	        // recuperation des images
+	        // recuperation des images et sauvegarder dans un dossier de partage
 			for (MultipartFile multipartFile : multipartFiles) {
 				String fileName = StringUtils.cleanPath(multipartFile.getOriginalFilename());
 		       
 		        try {
 		        	System.out.println("Path new dir : " + uploadDir);
-					FileUploadUtils.saveFile(uploadDir, fileName, multipartFile);
+					FileUploadUtil.saveFile(uploadDir, fileName, multipartFile);
 				} catch (IOException e) {
 					// TODO LOGGER
 					e.printStackTrace();
 				}
-			}    
+			}   
+			
+			// lancer le script python
 		}
-         // redirection vers une autre page web
+		 // redirection vers une autre page web
         return new RedirectView("/", true);
 	}
 	
