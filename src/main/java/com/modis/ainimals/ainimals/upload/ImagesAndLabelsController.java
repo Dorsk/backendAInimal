@@ -1,4 +1,4 @@
-package com.modis.ainimals.ainimals.load;
+package com.modis.ainimals.ainimals.upload;
 
 import java.io.File;
 import java.io.IOException;
