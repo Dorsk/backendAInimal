@@ -1,8 +1,9 @@
 package com.modis.ainimals.ainimals.utils;
 
+import java.io.BufferedReader;
 import java.io.File;
 import java.io.IOException;
-import java.nio.file.Path;
+import java.io.InputStreamReader;
 
 import javax.servlet.ServletContext;
 
@@ -29,7 +30,16 @@ public class PythonUtil {
 		ProcessBuilder processBuilder = new ProcessBuilder("python", getPythonScriptPath(sScriptName));
 	    processBuilder.redirectErrorStream(true);
 	    Process process = processBuilder.start();
-		return process.waitFor();
+	    int intCode = process.waitFor();
+	    // lecture du output du script
+	    BufferedReader bfr = new BufferedReader(new InputStreamReader(process.getInputStream()));
+	    String line = "";
+	    while ((line = bfr.readLine()) != null) {
+	    	// TODO Logger
+	    	System.out.println(line);
+	    }   
+	    intCode = process.waitFor();
+		return intCode;
     }
 
 	private static String getPythonScriptPath(String sScriptName) {
