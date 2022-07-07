@@ -49,6 +49,7 @@ public class FileUploadUtil {
 		 
 		for (String label : listLabels) {
 			fw.write(label);
+			fw.write(System.getProperty( "line.separator" ));
 		}
 		fw.close();
 	}
