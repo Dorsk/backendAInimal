@@ -22,7 +22,7 @@ public class FileUploadUtil {
 	 * @param multipartFile
 	 * @throws IOException
 	 */
-	public static void saveFile(String uploadDir, String fileName,
+	public static void saveImagesFile(String uploadDir, String fileName,
             MultipartFile multipartFile) throws IOException {
         Path uploadPath = Paths.get(uploadDir);
          

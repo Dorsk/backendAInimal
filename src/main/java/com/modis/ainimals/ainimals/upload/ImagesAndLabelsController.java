@@ -14,6 +14,8 @@ import javax.servlet.ServletContext;
 
 import java.time.LocalDateTime;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.util.StringUtils;
@@ -32,25 +34,13 @@ import com.modis.ainimals.ainimals.utils.FileUploadUtil;
 @ComponentScan({"com.modis.ainimals.ainimals.load"})
 public class ImagesAndLabelsController {
 
-	private final AtomicLong counter = new AtomicLong();
-
 	@Autowired
 	ServletContext context;
-	/**
-	 * récupération des labels 
-	 * 
-	 * @param label
-	 * @return
-	 */
-	@RequestMapping(value = "/loadlabels", method = RequestMethod.GET)
-	public ImagesAndLabelsData getlables(@RequestParam(value = "labels") String labels) {
-		
-		return new ImagesAndLabelsData(counter.incrementAndGet(),  labels);
-	}
-	
-	
-	/**
-	 * Home page 
+	 
+	Logger logger = LoggerFactory.getLogger(ImagesAndLabelsController.class);
+	 
+  
+	/** 
 	 * récupération des images 
 	 * TODO : recuperer les libelles
 	 * @param multipartFiles : images à upload
@@ -94,16 +84,16 @@ public class ImagesAndLabelsController {
 			Calendar cal = Calendar.getInstance();
 	        String uploadDir = context.getRealPath("user-photos");
 	        uploadDir = uploadDir + File.separator + dateFormat.format(cal.getTime()).replace("/", "-").replace(" ", "_").replace(":", "-") + File.separator + "upload" + File.separator;
-	        System.out.println("-- Path Dir ----- : " + uploadDir);
-	       
+	        logger.info("-- Path Dir ----- : " + uploadDir);
+ 
 	        // recuperation des images et sauvegarder dans un dossier de partage
 			for (MultipartFile multipartFile : multipartFiles) {
 				String fileName = StringUtils.cleanPath(multipartFile.getOriginalFilename());
 		        try {
-		        	System.out.println("-- Image name ---- : " + fileName);
-					FileUploadUtil.saveFile(uploadDir, fileName, multipartFile);
+		        	logger.info("-- Image name ---- : " + fileName);
+					FileUploadUtil.saveImagesFile(uploadDir, fileName, multipartFile);
 				} catch (IOException e) {
-					// TODO LOGGER
+					logger.error("ERROR : FileUploadUtil.saveFile() failed ", e);
 					e.printStackTrace();
 				}
 			} 
@@ -111,15 +101,14 @@ public class ImagesAndLabelsController {
 			// creer fichier txt des labels
 			try {
 				FileUploadUtil.saveLabelsFile(uploadDir, "labels.txt", listLabels);
-				System.out.println("-- File name ---- : labels.txt");
+				logger.info("-- File name ---- : labels.txt");
 			} catch (IOException e) {
-				// TODO LOGGER
-				e.printStackTrace();
+				logger.error("ERROR : FileUploadUtil.saveLabelsFile() failed ", e);
 			}
 			// TODO  lancer le script python
 			
 		}
-		 // redirection vers une autre page web
+		 // redirection vers une autre page web 
         return new RedirectView("/", true);
 	}
 	
