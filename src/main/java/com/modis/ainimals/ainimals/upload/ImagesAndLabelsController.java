@@ -95,6 +95,7 @@ public class ImagesAndLabelsController {
 			} 
 			
 			// creer fichier txt des labels
+			
 			try {
 				FileUploadUtil.saveLabelsFile(uploadDir, "labels-origin.txt", listLabels);
 				logger.info("-- File name ---- : labels-origin.txt");
