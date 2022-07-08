@@ -38,6 +38,16 @@ public class FileUploadUtil {
         }      
     }
 
+	/**
+	 * Crée 2 fichiers 
+	 *  le premier contient la liste des noms que l'utilisateur a renseigné
+	 *  le 2eme contient une numérotation de label (le python attend ce fichier)
+	 *  
+	 * @param uploadDir
+	 * @param sFileName
+	 * @param listLabels
+	 * @throws IOException
+	 */
 	public static void saveLabelsFile(String uploadDir, String sFileName, List<String> listLabels) throws IOException {
 		 
 		Path uploadPath = Paths.get(uploadDir);
@@ -45,10 +55,20 @@ public class FileUploadUtil {
 		if (!Files.exists(uploadPath)) {
             Files.createDirectories(uploadPath);
         }
+		// save orignal label
 		FileWriter fw = new FileWriter(uploadDir + File.separator + sFileName);
 		 
 		for (String label : listLabels) {
 			fw.write(label);
+			fw.write(System.getProperty( "line.separator" ));
+		}
+		fw.close();
+		
+		// save simple label
+		fw = new FileWriter(uploadDir + File.separator + "labels.txt");
+		 
+		for (int i = 0; i< listLabels.size(); i++) {
+			fw.write(i);
 			fw.write(System.getProperty( "line.separator" ));
 		}
 		fw.close();

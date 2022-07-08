@@ -80,13 +80,9 @@ public class ImagesAndLabelsController {
     	
 		// bloquage si 0 image à upload
 		if(multipartFiles.length > 1 || (multipartFiles.length == 1 && !multipartFiles[0].getOriginalFilename().equals(""))) {
-			// recuperation de la date actuelle pour faire un dossier pour les images qui sont upload
-			DateFormat dateFormat = new SimpleDateFormat("yyyy/MM/dd HH:mm:ss");
-			Calendar cal = Calendar.getInstance();
+			// recuperation du dossier de partage pour les images qui sont upload
 	        String uploadDir = context.getRealPath("shared");
-	        uploadDir = uploadDir + File.separator + dateFormat.format(cal.getTime()).replace("/", "-").replace(" ", "_").replace(":", "-") + File.separator + "upload" + File.separator;
-	        logger.info("-- Path Dir ----- : " + uploadDir);
- 
+	        
 	        // recuperation des images et sauvegarder dans un dossier de partage
 			for (MultipartFile multipartFile : multipartFiles) {
 				String fileName = StringUtils.cleanPath(multipartFile.getOriginalFilename());
@@ -106,7 +102,7 @@ public class ImagesAndLabelsController {
 				logger.error("-- FileUploadUtil.saveLabelsFile() failed ", e);
 			}
 			
-			// TODO  lancer le script python
+			// lancer le script python
 			String sScript = context.getRealPath("scripts");
 			sScript = sScript + File.separator + "csv_creation.py";
 			logger.info("-- Préparation script ---- : " + sScript);
@@ -119,7 +115,7 @@ public class ImagesAndLabelsController {
 			}
 			logger.info("-- Fin d'execution du script ---- : " + sScript);
 		}
-		 // redirection vers une autre page web 
+		 // redirection vers une autre page web pour choisir les labels
         return new RedirectView("/loading", true); 
 	}
 	
