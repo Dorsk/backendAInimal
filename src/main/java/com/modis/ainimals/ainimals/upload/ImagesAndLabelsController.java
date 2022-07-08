@@ -26,6 +26,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
+import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.view.RedirectView;
 
 import com.modis.ainimals.ainimals.utils.FileUploadUtil;
@@ -49,7 +50,7 @@ public class ImagesAndLabelsController {
 	 * @return 
 	 */
 	@PostMapping("/upload")
-	public RedirectView uploadImage(@RequestParam("files") MultipartFile [] multipartFiles,
+	public ModelAndView uploadImage(@RequestParam("files") MultipartFile [] multipartFiles,
 			@RequestParam("label1") String sLabel1, @RequestParam("label2") String sLabel2, @RequestParam("label3") String sLabel3,
 			@RequestParam("label4") String sLabel4, @RequestParam("label5") String sLabel5, @RequestParam("label6") String sLabel6,
 			@RequestParam("label7") String sLabel7, @RequestParam("label8") String sLabel8, @RequestParam("label9") String sLabel9,
@@ -117,22 +118,21 @@ public class ImagesAndLabelsController {
 			logger.info("-- Fin d'execution du script ---- : " + sScript);
 		}
 		 // redirection vers une autre page web pour choisir les labels
-        return new RedirectView("/loading", true); 
+		ModelAndView modelView = new ModelAndView("loading");
+		modelView.addObject("lables", listLabels);
+		modelView.addObject("photo", multipartFiles[0].getOriginalFilename());
+		return modelView;
 	}
 	
 	
-	/** 
-	 * récupération des images 
-	 * TODO : recuperer les libelles
-	 * @param multipartFiles : images à upload
-	 * @param multiple labels :  il peut y avoir de 2 à 10 labels
+	/**   
 	 * @return 
+	 * @return 
+	 * @return loading.html
 	 */
 	@GetMapping("/loading")
-	public String uploadImage() {
-		
-		
-		return "loading.html";
+	public void uploadImage() {
+		  
 	}
 	
 }

@@ -21,6 +21,11 @@ body {
 	height:100vh;
 }
 
+img {
+    max-width: 1280px;
+    max-height: 720px;
+}
+
 /* Clear floats after the columns */
 .row:after {
 	content: "";

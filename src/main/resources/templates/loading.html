@@ -5,26 +5,30 @@
       <title>AInimals</title>
       <link rel="stylesheet" type="text/css" th:href="@{/css/style.css}"/>
    </head>
-   <body> 
-   		<div class="column1">
-   			<h2>Chargement de vos images</h2>
-  	 		<div class="spinner-border" role="status">
-				<span class="sr-only">Loading...</span>
-			</div>
-			<div class="spinner-border" role="status">
-				<span class="sr-only">Loading...</span>
-			</div>
-			<div class="spinner-border" role="status">
-				<span class="sr-only">Loading...</span>
-			</div>
-			<div class="spinner-border" role="status">
-				<span class="sr-only">Loading...</span>
-			</div>
-			<div class="spinner-border" role="status">
-				<span class="sr-only">Loading...</span>
-			</div>
-			
-		</div>	
+   <body>
+
+         <div class="row">
+	         <!--  Div LEFT SIDE -->
+	         <div class="column2"> 
+	         	<div id="object1"><h1>Active Learner</h1></div>
+	         	
+    			<img class="d-block w-100" th:src="@{${'/shared/' + photo}}" alt="@{${photo}}">
+	         </div>
+	         
+	         <!--  Div RIGHT SIDE  -->
+	         <div class="column1" layout:fragment="content">
+	         	<h2>Choisissez les labels pour vos images</h2>
+				<div>
+				<ul>
+				    <li th:each="label: @{${labels}}">
+				        <span th:text="${label}">${label}</span>
+				        <input type="submit" value="Done">
+				    </li>
+				</ul>
+				</div>
+	 		</div>	
+	 	</div>
    </body>
    
 </html>
+
