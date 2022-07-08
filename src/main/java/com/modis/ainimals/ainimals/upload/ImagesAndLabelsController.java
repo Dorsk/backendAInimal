@@ -29,6 +29,7 @@ import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.view.RedirectView;
 
 import com.modis.ainimals.ainimals.utils.FileUploadUtil;
+import com.modis.ainimals.ainimals.utils.PythonUtil;
 
 @RestController
 @ComponentScan({"com.modis.ainimals.ainimals.load"})
@@ -82,7 +83,7 @@ public class ImagesAndLabelsController {
 			// recuperation de la date actuelle pour faire un dossier pour les images qui sont upload
 			DateFormat dateFormat = new SimpleDateFormat("yyyy/MM/dd HH:mm:ss");
 			Calendar cal = Calendar.getInstance();
-	        String uploadDir = context.getRealPath("user-photos");
+	        String uploadDir = context.getRealPath("shared");
 	        uploadDir = uploadDir + File.separator + dateFormat.format(cal.getTime()).replace("/", "-").replace(" ", "_").replace(":", "-") + File.separator + "upload" + File.separator;
 	        logger.info("-- Path Dir ----- : " + uploadDir);
  
@@ -93,23 +94,48 @@ public class ImagesAndLabelsController {
 		        	logger.info("-- Image name ---- : " + fileName);
 					FileUploadUtil.saveImagesFile(uploadDir, fileName, multipartFile);
 				} catch (IOException e) {
-					logger.error("ERROR : FileUploadUtil.saveFile() failed ", e);
-					e.printStackTrace();
+					logger.error("-- FileUploadUtil.saveFile() failed ", e);
 				}
 			} 
 			
 			// creer fichier txt des labels
 			try {
-				FileUploadUtil.saveLabelsFile(uploadDir, "labels.txt", listLabels);
-				logger.info("-- File name ---- : labels.txt");
+				FileUploadUtil.saveLabelsFile(uploadDir, "labels-origin.txt", listLabels);
+				logger.info("-- File name ---- : labels-origin.txt");
 			} catch (IOException e) {
-				logger.error("ERROR : FileUploadUtil.saveLabelsFile() failed ", e);
+				logger.error("-- FileUploadUtil.saveLabelsFile() failed ", e);
 			}
-			// TODO  lancer le script python
 			
+			// TODO  lancer le script python
+			String sScript = context.getRealPath("scripts");
+			sScript = sScript + File.separator + "csv_creation.py";
+			logger.info("-- Préparation script ---- : " + sScript);
+			try {
+				PythonUtil.execScript(sScript, uploadDir);
+			} catch (IOException e) {
+				logger.error("-- PythonUtil.execScript() failed ", e);
+			} catch (InterruptedException e) {
+				logger.error("-- PythonUtil.execScript() failed ", e);
+			}
+			logger.info("-- Fin d'execution du script ---- : " + sScript);
 		}
 		 // redirection vers une autre page web 
-        return new RedirectView("/", true);
+        return new RedirectView("/loading", true); 
+	}
+	
+	
+	/** 
+	 * récupération des images 
+	 * TODO : recuperer les libelles
+	 * @param multipartFiles : images à upload
+	 * @param multiple labels :  il peut y avoir de 2 à 10 labels
+	 * @return 
+	 */
+	@GetMapping("/loading")
+	public String uploadImage() {
+		
+		
+		return "loading.html";
 	}
 	
 }

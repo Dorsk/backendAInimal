@@ -2,7 +2,7 @@
 <html xmlns:th="http://www.thymeleaf.org">
    <head>
       <meta charset="UTF-8" />
-      <title>Welcome</title>
+      <title>AInimals</title>
       <link rel="stylesheet" type="text/css" th:href="@{/css/style.css}"/>
    </head>
    <body>
@@ -20,7 +20,7 @@
 	         </div>
 	         
 	         <!--  Div RIGHT SIDE with FORM -->
-	         <div class="column2">
+	         <div class="column2" layout:fragment="content">
 	         	<h2>Chargez vos images<br /> 
 					et saisissez les labels à rechercher  <br /> 
 				</h2>
@@ -29,16 +29,22 @@
 		         <form th:action="@{/upload}" method="post" enctype="multipart/form-data">
 				 	<label>Images : </label>
 		    		<input type="file" name="files" th:multiple="multiple" accept="image/png, image/jpeg" />
-		    		<div> <label> Label 1 </label> <input type="text" name="label1" placeholder="string" /> <!-- th:field="*{label1}"  --></div>
-	 				<div> <label> Label 2 </label> <input type="text" name="label2" placeholder="string" /> <!-- th:field="*{label2}"  --></div>
-		   			<div> <label> Label 3 </label> <input type="text" name="label3" placeholder="string" /> <!-- th:field="*{label2}"  --></div>
-		   			<div> <label> Label 4 </label> <input type="text" name="label4" placeholder="string" /> <!-- th:field="*{label2}"  --></div>
-		   			<div> <label> Label 5 </label> <input type="text" name="label5" placeholder="string" /> <!-- th:field="*{label2}"  --></div>
-		   			<div> <label> Label 6 </label> <input type="text" name="label6" placeholder="string" /> <!-- th:field="*{label2}"  --></div>
-		   			<div> <label> Label 7 </label> <input type="text" name="label7" placeholder="string" /> <!-- th:field="*{label2}"  --></div>
-		   			<div> <label> Label 8 </label> <input type="text" name="label8" placeholder="string" /> <!-- th:field="*{label2}"  --></div>
-		   			<div> <label> Label 9 </label> <input type="text" name="label9" placeholder="string" /> <!-- th:field="*{label2}"  --></div>
-		   			<div> <label> Label 10</label> <input type="text" name="label10" placeholder="string" /> <!-- th:field="*{label2}"  --></div>
+		    		<div> <label> Label 1 </label> <input type="text" name="label1" required placeholder="string" /></div>
+	 				<div> <label> Label 2 </label> <input type="text" name="label2" required placeholder="string" /></div>
+		   			<div> <label> Label 3 </label> <input type="text" name="label3" placeholder="string" /> </div>
+		   			<div> <label> Label 4 </label> <input type="text" name="label4" placeholder="string" /> </div>
+		   			<div> <label> Label 5 </label> <input type="text" name="label5" placeholder="string" /> </div>
+		   			
+		   			
+		   			<div> <label> Label 6 </label> <input type="text" name="label6" placeholder="string" /> </div>
+		   			
+		   			
+		   			
+		   			
+		   			<div> <label> Label 7 </label> <input type="text" name="label7" placeholder="string" /> </div>
+		   			<div> <label> Label 8 </label> <input type="text" name="label8" placeholder="string" /> </div>
+		   			<div> <label> Label 9 </label> <input type="text" name="label9" placeholder="string" /> </div>
+		   			<div> <label> Label 10</label> <input type="text" name="label10" placeholder="string" /> </div>
 		         	<button type="submit" class="btn btn-primary">Upload Files</button>
 				 </form>
 	 		</div>	
