@@ -100,17 +100,22 @@ public class ImagesAndLabelsController {
 			}
 			
 			// lancer le script python
-			String sScript = context.getRealPath("scripts");
-			sScript = sScript + File.separator + "csv_creation.py";
-			logger.info("-- Préparation script ---- : " + sScript);
+			
+			logger.info("-- Préparation scripts ---- ");
 			try {
-				PythonUtil.execScript(sScript, uploadDir);
+				String sScript = context.getRealPath("scripts");
+				sScript = sScript + File.separator + "csv_creation.py"; 
+				PythonUtil.execScript(sScript, uploadDir, -1);
+				
+				sScript = context.getRealPath("scripts");
+				String sScript2 = sScript + File.separator + "entropy.py";
+				PythonUtil.execScript(sScript2, null, listLabels.size());
 			} catch (IOException e) {
-				logger.error("-- PythonUtil.execScript() failed ", e);
+				logger.error("-- PythonUtil.execScript() failed csv_creation.py ", e);
 			} catch (InterruptedException e) {
-				logger.error("-- PythonUtil.execScript() failed ", e);
+				logger.error("-- PythonUtil.execScript() failed entropy.py ", e);
 			}
-			logger.info("-- Fin d'execution du script ---- : " + sScript);
+			logger.info("-- Fin d'execution des scripts ---- ");
 		}
 		 // redirection vers une autre page web pour choisir les labels
 		ModelAndView modelView = new ModelAndView("updateLabel");
@@ -126,7 +131,7 @@ public class ImagesAndLabelsController {
 	public ModelAndView getUpdateLabel(@RequestParam("photo") String sPhoto, @RequestParam("submit") String sSubmit) {
 		List <String> listLabels = new ArrayList<>();
 		Map<String, Integer> mapLabelNumber = new HashMap<>();
-		String sFilePath = context.getRealPath("shared") + File.separator + "labels-origin.txt";
+		String sFilePath = context.getRealPath("shared") + File.separator + ".." + File.separator + "labels-origin.txt";
 		String sFilePathNumber = context.getRealPath("shared") + File.separator + "labels.txt";
 		// update fichier img;label
 		

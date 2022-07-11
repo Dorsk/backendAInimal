@@ -58,7 +58,7 @@ public class FileUploadUtil {
             Files.createDirectories(uploadPath);
         }
 		// save orignal label
-		FileWriter fw = new FileWriter(uploadDir + File.separator + sFileName);
+		FileWriter fw = new FileWriter(uploadDir + File.separator + ".." + File.separator + sFileName);
 		 
 		for (String label : listLabels) {
 			fw.write(label);

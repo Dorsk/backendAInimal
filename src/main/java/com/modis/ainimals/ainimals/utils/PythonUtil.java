@@ -31,11 +31,14 @@ public class PythonUtil {
 	 * @throws IOException
 	 * @throws InterruptedException 
 	 */
-	public static int execScript(String sScriptName, String sUploadDir) throws IOException, InterruptedException {
+	public static int execScript(String sScriptName, String sUploadDir, int nbLabels) throws IOException, InterruptedException {
 		
 		 Process process = null;
 	     try{
-	             process = Runtime.getRuntime().exec("python "+ sScriptName + " " + sUploadDir);
+	    	 if(sUploadDir!=null)
+	    		 process = Runtime.getRuntime().exec("python "+ sScriptName + " " + sUploadDir);
+	    	 else if(nbLabels > (-1))
+	    		 process = Runtime.getRuntime().exec("python "+ sScriptName + " " + nbLabels);
 	     }catch(Exception e) {
 	    	// TODO Logger
 	        System.out.println("Exception Raised" + e.toString());
