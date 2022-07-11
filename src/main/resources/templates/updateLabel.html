@@ -1,0 +1,39 @@
+<!DOCTYPE HTML>
+<html xmlns:th="http://www.thymeleaf.org">
+   <head>
+      <meta charset="UTF-8" />
+      <title>AInimals</title>
+      <link rel="stylesheet" type="text/css" th:href="@{/css/style.css}"/>
+   </head>
+   <body>
+
+         <div class="row">
+         	
+		         <!--  Div LEFT SIDE -->
+		         <div class="column2"> 
+		         	<div id="object1"><h1>Active Learner</h1></div>
+		         	
+	    			<img class="d-block w-100" th:src="@{${'/shared/' + photo}}" th:alt="${photo}">
+		         </div>
+										 
+	
+		         <!--  Div RIGHT SIDE  -->
+		         <div class="column1">
+		         	<h2>Choisissez un label pour l'images</h2>
+					<div> 
+					 <form action="@{/updateLabel}" method="get">
+						<ul>
+							<input th:id="pathImage" th:type="hiden" th:name="photo" th:value="${photo}" />
+							<div th:each="label: ${labels}">
+								<button type="submit" th:text="${label}" th:name="submit" th:value="${label}"></button>
+							</div> 
+ 						</ul>
+					</form>
+					</div>
+		 		</div>	
+	 		
+	 	</div>
+   </body>
+   
+</html>
+

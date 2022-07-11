@@ -1,18 +1,17 @@
 package com.modis.ainimals.ainimals.upload;
 
+import java.io.BufferedReader;
 import java.io.File;
-import java.io.IOException;
-import java.nio.file.Path;
-import java.text.DateFormat;
-import java.text.SimpleDateFormat;
+import java.io.FileOutputStream;
+import java.io.FileReader;
+import java.io.IOException; 
 import java.util.ArrayList;
-import java.util.Calendar;
+import java.util.HashMap;
 import java.util.List;
-import java.util.concurrent.atomic.AtomicLong;
+import java.util.Map;
 
 import javax.servlet.ServletContext;
-
-import java.time.LocalDateTime;
+ 
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -20,20 +19,17 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.PostMapping; 
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
-import org.springframework.web.servlet.ModelAndView;
-import org.springframework.web.servlet.view.RedirectView;
+import org.springframework.web.servlet.ModelAndView; 
 
 import com.modis.ainimals.ainimals.utils.FileUploadUtil;
 import com.modis.ainimals.ainimals.utils.PythonUtil;
 
 @RestController
-@ComponentScan({"com.modis.ainimals.ainimals.load"})
+@ComponentScan({"com.modis.ainimals.ainimals.upload"})
 public class ImagesAndLabelsController {
 
 	@Autowired
@@ -41,7 +37,6 @@ public class ImagesAndLabelsController {
 	 
 	Logger logger = LoggerFactory.getLogger(ImagesAndLabelsController.class);
 	 
-  
 	/** 
 	 * récupération des images 
 	 * TODO : recuperer les libelles
@@ -118,22 +113,73 @@ public class ImagesAndLabelsController {
 			logger.info("-- Fin d'execution du script ---- : " + sScript);
 		}
 		 // redirection vers une autre page web pour choisir les labels
-		ModelAndView modelView = new ModelAndView("loading");
-		modelView.addObject("lables", listLabels);
+		ModelAndView modelView = new ModelAndView("updateLabel");
+		modelView.addObject("labels", listLabels);
 		modelView.addObject("photo", multipartFiles[0].getOriginalFilename());
 		return modelView;
 	}
-	
-	
+	 
 	/**   
-	 * @return 
-	 * @return 
-	 * @return loading.html
+	 * @return  
 	 */
-	@GetMapping("/loading")
-	public void uploadImage() {
-		  
+	@GetMapping("/updateLabel")
+	public ModelAndView getUpdateLabel(@RequestParam("photo") String sPhoto, @RequestParam("submit") String sSubmit) {
+		List <String> listLabels = new ArrayList<>();
+		Map<String, Integer> mapLabelNumber = new HashMap<>();
+		String sFilePath = context.getRealPath("shared") + File.separator + "labels-origin.txt";
+		String sFilePathNumber = context.getRealPath("shared") + File.separator + "labels.txt";
+		// update fichier img;label
+		
+		// recuperer la liste des labels ayant était saisie par l'utilisateur la première fois  
+		try {
+		    BufferedReader reader = new BufferedReader(new FileReader(sFilePath));
+		    String line;
+		    int nbLine=0;
+		    while ((line = reader.readLine()) != null) {
+		    	listLabels.add(line);
+		    	mapLabelNumber.put(line, nbLine);
+		    	nbLine++;
+		    }  
+			reader.close();
+		} catch (IOException e) {
+			logger.error("-- ImagesAndLabelsController.updateLabel() failed ", e);
+		}
+		
+	    // TODO : ajouter le label au fichier labels.txt et trouve la prochaine image
+		 try {
+		        // input the file content to the StringBuffer "input"
+		        BufferedReader file = new BufferedReader(new FileReader(sFilePathNumber));
+		        StringBuffer inputBuffer = new StringBuffer();
+		        String line;
+
+		        while ((line = file.readLine()) != null) {
+		        	if(line.contains(sPhoto)) {
+		        		line = line + mapLabelNumber.get(sSubmit);
+		        	}
+		            inputBuffer.append(line);
+		            inputBuffer.append('\n');
+		        }
+		        file.close();
+		        String inputStr = inputBuffer.toString();
+  
+		        // display the new file for debugging
+		        System.out.println("----------------------------------\n" + inputStr);
+
+		        // write the new string with the replaced line OVER the same file
+		        FileOutputStream fileOut = new FileOutputStream(sFilePathNumber);
+		        fileOut.write(inputStr.getBytes());
+		        fileOut.close();
+
+		    } catch (Exception e) {
+		        System.out.println("Problem reading file.");
+		    }
+		
+		// charger une autre image avec les labels si besoin
+		ModelAndView modelView = new ModelAndView("loading");
+		modelView.addObject("labels", listLabels);
+//		modelView.addObject("photo", photo); // TODO un nouveau chemin lu dans le fichier labels.txt sans label
+		return modelView;
 	}
-	
+
 }
 

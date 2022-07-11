@@ -67,13 +67,12 @@ public class FileUploadUtil {
 		fw.close();
 		
 		// save simple label
-		fw = new FileWriter(uploadDir + File.separator + "labels.txt");
-		 
+		FileWriter fw2 = new FileWriter(uploadDir + File.separator + "labels.txt");
 		for (int i = 0; i< listLabels.size(); i++) {
-			fw.write(i);
-			fw.write(System.getProperty( "line.separator" ));
+			fw2.write(i);
+			fw2.write(System.getProperty( "line.separator" ));
 		}
-		fw.close();
+		fw2.close();
 	}
 	
 }
