@@ -10,37 +10,42 @@
          <div class="row">
 	         <!--  Div LEFT SIDE -->
 	         <div class="column1"> 
-	         	<div id="object1"><h1>Active Learner</h1></div>
-    			<div id="object2">Lorem ipsum dolor sit amet, consectetur <br /> 
-    				adipiscing elit, sed do eiusmod tempor <br /> 
-    				incididunt ut labore et dolore magna aliqua.<br /> 
-					Ut enim ad minim veniam, quis nostrud <br /> 
-					exercitation ullamco laboris nisi ut aliquip
+	        	 <div>
+		         	<div id="object1"><h1>Active Learner</h1></div>
+	    			<div id="object2">Lorem ipsum dolor sit amet, consectetur <br /> 
+	    				adipiscing elit, sed do eiusmod tempor <br /> 
+	    				incididunt ut labore et dolore magna aliqua.<br /> 
+						Ut enim ad minim veniam, quis nostrud <br /> 
+						exercitation ullamco laboris nisi ut aliquip
+					</div>
 				</div>
 	         </div>
 	         
 	         <!--  Div RIGHT SIDE with FORM -->
 	         <div class="column2">
-	         	<h2>Chargez vos images<br /> 
-					et saisissez les labels à rechercher  <br /> 
-				</h2>
-				<div>2 labels min. 10 max. </div>
-				
-		         <form th:action="@{/upload}" method="post" enctype="multipart/form-data">
-				 	<label>Images : </label>
-		    		<input type="file" name="files" th:multiple="multiple" accept="image/png, image/jpeg" />
-		    		<div> <label> Label 1 </label> <input type="text" name="label1" required placeholder="string" /></div>
-	 				<div> <label> Label 2 </label> <input type="text" name="label2" required placeholder="string" /></div>
-		   			<div> <label> Label 3 </label> <input type="text" name="label3" placeholder="string" /> </div>
-		   			<div> <label> Label 4 </label> <input type="text" name="label4" placeholder="string" /> </div>
-		   			<div> <label> Label 5 </label> <input type="text" name="label5" placeholder="string" /> </div>
-		   			<div> <label> Label 6 </label> <input type="text" name="label6" placeholder="string" /> </div>
-		   			<div> <label> Label 7 </label> <input type="text" name="label7" placeholder="string" /> </div>
-		   			<div> <label> Label 8 </label> <input type="text" name="label8" placeholder="string" /> </div>
-		   			<div> <label> Label 9 </label> <input type="text" name="label9" placeholder="string" /> </div>
-		   			<div> <label> Label 10</label> <input type="text" name="label10" placeholder="string" /> </div>
-		         	<button type="submit" class="btn btn-primary">Upload Files</button>
-				 </form>
+	        	<div>
+		         	<h2>Chargez vos images<br /> 
+						et saisissez les labels à rechercher  <br /> 
+					</h2>
+					
+					<div>
+			         	<form th:action="@{/upload}" method="post" enctype="multipart/form-data">
+				    		<div><label>Images : </label> <input type="file" name="files" th:multiple="multiple" accept="image/png, image/jpeg" /></div>		  
+				    		<div> <label>2 labels min. 10 max.</label> </div>
+				    		<div> <label> Label 1 </label> <input type="text" name="label1" required placeholder="string" /></div>
+			 				<div> <label> Label 2 </label> <input type="text" name="label2" required placeholder="string" /></div>
+				   			<div> <label> Label 3 </label> <input type="text" name="label3" placeholder="string" /> </div>
+				   			<div> <label> Label 4 </label> <input type="text" name="label4" placeholder="string" /> </div>
+				   			<div> <label> Label 5 </label> <input type="text" name="label5" placeholder="string" /> </div>
+				   			<div> <label> Label 6 </label> <input type="text" name="label6" placeholder="string" /> </div>
+				   			<div> <label> Label 7 </label> <input type="text" name="label7" placeholder="string" /> </div>
+				   			<div> <label> Label 8 </label> <input type="text" name="label8" placeholder="string" /> </div>
+				   			<div> <label> Label 9 </label> <input type="text" name="label9" placeholder="string" /> </div>
+				   			<div> <label> Label 10</label> <input type="text" name="label10" placeholder="string" /> </div>
+				         	<div> <button type="submit" class="btn btn-primary">Envoyer</button> </div>
+						 </form>
+					 </div>
+				</div>
 	 		</div>	
 	 	</div>
    </body>

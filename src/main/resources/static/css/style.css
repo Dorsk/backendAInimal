@@ -11,6 +11,8 @@ body {
 	width: 30%;
 	height:100vh;
 	background: linear-gradient(31.75deg, #845EC2 -1.86%, #2C73D2 44.37%, #00A4DE 97.18%);
+	place-items: center;
+	place-content: center;
 }
 
 .column2 {
@@ -19,13 +21,24 @@ body {
     margin-right: auto;
 	width: 70%;
 	height:100vh;
+	place-items: center;
+	place-content: center;
 }
+
+div {
+	margin-top: 20px;
+}
+
+form {
+	margin-left: 20px;
+}
+
 
 img {
     max-width: 1280px;
     max-height: 720px;
 }
-
+ 
 /* Clear floats after the columns */
 .row:after {
 	content: "";

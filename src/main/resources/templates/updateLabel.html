@@ -9,16 +9,18 @@
 
          <div class="row">
          	
-		         <!--  Div LEFT SIDE -->
-		         <div class="column2"> 
+		     <!--  Div LEFT SIDE -->
+		    <div class="column2"> 
+		         <div>
 		         	<div id="object1"><h1>Active Learner</h1></div>
 		         	
 	    			<img class="d-block w-100" th:src="@{${'/shared/img/' + photo}}" th:alt="${photo}">
 		         </div>
-										 
+			</div>					 
 	
 		         <!--  Div RIGHT SIDE  -->
-		         <div class="column1">
+		    <div class="column1">
+		         <div>
 		         	<h2>Choisissez un label pour l'image</h2>
 					<div> 
 					 <form th:action="@{/updateLabel}" method="get">
@@ -31,7 +33,7 @@
 					</form>
 					</div>
 		 		</div>	
-	 		
+	 		</div>	
 	 	</div>
    </body>
    
