@@ -35,10 +35,13 @@ public class PythonUtil {
 		
 		 Process process = null;
 	     try{
+	    	 // cherche quel script executer
+	    	 if(sUploadDir==null && nbLabels == (-1))
+	    		 process = Runtime.getRuntime().exec("python "+ sScriptName); // label . py
 	    	 if(sUploadDir!=null)
-	    		 process = Runtime.getRuntime().exec("python "+ sScriptName + " " + sUploadDir);
+	    		 process = Runtime.getRuntime().exec("python "+ sScriptName + " " + sUploadDir); // csv----- . py
 	    	 else if(nbLabels > (-1))
-	    		 process = Runtime.getRuntime().exec("python "+ sScriptName + " " + nbLabels);
+	    		 process = Runtime.getRuntime().exec("python "+ sScriptName + " " + nbLabels);// entropy . py
 	     }catch(Exception e) {
 	    	// TODO Logger
 	    	logger.error("Exception Raised",e);

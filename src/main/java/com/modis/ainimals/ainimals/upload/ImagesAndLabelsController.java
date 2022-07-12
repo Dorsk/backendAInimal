@@ -131,8 +131,7 @@ public class ImagesAndLabelsController {
 		Map<String, Integer> mapLabelNumber = new HashMap<>();
 		String sFilePath = context.getRealPath("shared") + File.separator + "labels-origin.txt";
 		String sFilePathNumber = context.getRealPath("shared") + File.separator + "topEntropy.txt";
-		String sNextImage = null;
-		// update fichier img;label
+		String sNextImage = null; 
 		
 		// recuperer la liste des labels ayant était saisie par l'utilisateur la première fois  
 		try {
@@ -149,46 +148,92 @@ public class ImagesAndLabelsController {
 			logger.error("-- ImagesAndLabelsController.updateLabel() failed ", e);
 		}
 		
-	    // ajouter le label au fichier labels.txt et trouver la prochaine image
-		 try { 
-		        BufferedReader file = new BufferedReader(new FileReader(sFilePathNumber));
-		        StringBuffer inputBuffer = new StringBuffer();
-		        String line;
+		// ajouter le label au fichier labels.txt et trouver la prochaine image // FAIRE UNE METHODE
+		try {
+	        BufferedReader file = new BufferedReader(new FileReader(sFilePathNumber));
+	        StringBuffer inputBuffer = new StringBuffer();
+	        String line;
 
-		        while ((line = file.readLine()) != null) {
-		        	if(line.contains(sPhoto)) { // trouve l'image qui aura le label
-		        		line = line + "," + mapLabelNumber.get(sSubmit);
-		        	} 
-		        	else if (!line.contains(",")) { // trouve la prochaine image à labeliser
-		        		sNextImage = line;
-		        	}
-		            inputBuffer.append(line);
-		            inputBuffer.append('\n');
-		        }
-		        file.close();
-		        String inputStr = inputBuffer.toString();
-    
-		        // write the new string with the replaced line OVER the same file
-		        FileOutputStream fileOut = new FileOutputStream(sFilePathNumber);
-		        fileOut.write(inputStr.getBytes());
-		        fileOut.close();
+	        while ((line = file.readLine()) != null) {
+	        	if(line.contains(sPhoto)) { // trouve l'image qui aura le label
+	        		line = line + "," + mapLabelNumber.get(sSubmit);
+	        	} 
+	        	else if (!line.contains(",") && !line.contains("path")) { // trouve la prochaine image à labeliser 
+	        		sNextImage = line;
+	        	}
+	            inputBuffer.append(line);
+	            inputBuffer.append('\n');
+	        }
+	        file.close();
+	        String inputStr = inputBuffer.toString();
 
-		    } catch (Exception e) {
-		        System.out.println("Problem reading file.");
-		    }
+	        // write the new string with the replaced line OVER the same file
+	        FileOutputStream fileOut = new FileOutputStream(sFilePathNumber);
+	        fileOut.write(inputStr.getBytes());
+	        fileOut.close();
+
+	    } catch (Exception e) {
+	    	logger.error("-- ImagesAndLabelsController.updateLabel() failed ", e);
+	    }
 		
-		// charger une autre image avec les labels si besoin
+		// Si plus d'image a labeliser
 		if (sNextImage==null) {
-			ModelAndView modelView = new ModelAndView("end"); 
-			return modelView;
-		} else {
-			ModelAndView modelView = new ModelAndView("updateLabel");
-			File image = new File(sNextImage);
-			modelView.addObject("labels", listLabels);
-			modelView.addObject("photo", image.getName()); 
-			return modelView;
-		}
-	}
+			// lancer le python labels.py
+			try {
+				String sScript = context.getRealPath("scripts") + File.separator + "label.py"; 
+				logger.info("-- ImagesAndLabelsController.updateLabel() - START - PythonUtil.execScript label.py ");
+				PythonUtil.execScript(sScript, null, -1);
+				logger.info("-- ImagesAndLabelsController.updateLabel() - END -  PythonUtil.execScript label.py ");
+				sScript = context.getRealPath("scripts") + File.separator + "entropy.py"; 
+				logger.info("-- ImagesAndLabelsController.updateLabel() - START - PythonUtil.execScript entropy.py ");
+				PythonUtil.execScript(sScript, null, listLabels.size());
+				logger.info("-- ImagesAndLabelsController.updateLabel() - END -  PythonUtil.execScript entropy.py ");
+				// ajouter le label au fichier labels.txt et trouver la prochaine image // FAIRE UNE METHODE
+				try {
+			        BufferedReader file = new BufferedReader(new FileReader(sFilePathNumber));
+			        StringBuffer inputBuffer = new StringBuffer();
+			        String line;
 
+			        while ((line = file.readLine()) != null) {
+			        	if(line.contains(sPhoto)) { // trouve l'image qui aura le label
+			        		line = line + "," + mapLabelNumber.get(sSubmit);
+			        	} 
+			        	else if (!line.contains(",") && !line.contains("path")) { // trouve la prochaine image à labeliser 
+			        		sNextImage = line;
+			        	}
+			            inputBuffer.append(line);
+			            inputBuffer.append('\n');
+			        }
+			        file.close();
+			        String inputStr = inputBuffer.toString();
+			        FileOutputStream fileOut = new FileOutputStream(sFilePathNumber);
+			        fileOut.write(inputStr.getBytes());
+			        fileOut.close();
+
+			    } catch (Exception e) {
+			    	logger.error("-- ImagesAndLabelsController.updateLabel() failed ", e);
+			    }
+				if (sNextImage==null) { // fin des labels
+					ModelAndView modelView = new ModelAndView("end"); 
+					return modelView;
+				} else { // faire une boucle sur les nouvelles images à labeliser
+					ModelAndView modelView = new ModelAndView("updateLabel");
+					File image = new File(sNextImage);
+					modelView.addObject("labels", listLabels);
+					modelView.addObject("photo", image.getName()); 
+					return modelView;
+				}
+			} catch (Exception e) {
+				logger.error("-- ImagesAndLabelsController.updateLabel() failed ", e); 
+			}  
+		}
+		// il reste des images a labeliser dans le fichier 
+		ModelAndView modelView = new ModelAndView("updateLabel");
+		File image = new File(sNextImage);
+		modelView.addObject("labels", listLabels);
+		modelView.addObject("photo", image.getName()); 
+		return modelView; 
+	}
+ 
 }
 
