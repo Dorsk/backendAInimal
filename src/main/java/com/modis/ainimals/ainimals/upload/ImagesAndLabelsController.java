@@ -130,7 +130,7 @@ public class ImagesAndLabelsController {
 		List <String> listLabels = new ArrayList<>();
 		Map<String, Integer> mapLabelNumber = new HashMap<>();
 		String sFilePath = context.getRealPath("shared") + File.separator + "labels-origin.txt";
-		String sFilePathNumber = context.getRealPath("shared") + File.separator + "labels.txt";
+		String sFilePathNumber = context.getRealPath("shared") + File.separator + "topEntropy.txt";
 		// update fichier img;label
 		
 		// recuperer la liste des labels ayant était saisie par l'utilisateur la première fois  
@@ -164,10 +164,7 @@ public class ImagesAndLabelsController {
 		        }
 		        file.close();
 		        String inputStr = inputBuffer.toString();
-  
-		        // display the new file for debugging
-		        System.out.println("----------------------------------\n" + inputStr);
-
+    
 		        // write the new string with the replaced line OVER the same file
 		        FileOutputStream fileOut = new FileOutputStream(sFilePathNumber);
 		        fileOut.write(inputStr.getBytes());
