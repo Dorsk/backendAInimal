@@ -58,7 +58,7 @@ public class FileUploadUtil {
             Files.createDirectories(uploadPath);
         }
 		// save orignal label
-		FileWriter fw = new FileWriter(uploadDir + File.separator + ".." + File.separator + sFileName);
+		FileWriter fw = new FileWriter(uploadDir + File.separator + sFileName);
 		 
 		for (String label : listLabels) {
 			fw.write(label);
@@ -69,7 +69,7 @@ public class FileUploadUtil {
 		// save simple label
 		FileWriter fw2 = new FileWriter(uploadDir + File.separator + "labels.txt");
 		for (int i = 0; i< listLabels.size(); i++) {
-			fw2.write(i);
+			fw2.write(String.valueOf(i));
 			fw2.write(System.getProperty( "line.separator" ));
 		}
 		fw2.close();

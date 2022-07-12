@@ -41,7 +41,7 @@ public class PythonUtil {
 	    		 process = Runtime.getRuntime().exec("python "+ sScriptName + " " + nbLabels);
 	     }catch(Exception e) {
 	    	// TODO Logger
-	        System.out.println("Exception Raised" + e.toString());
+	    	logger.error("Exception Raised",e);
 	     }
 	     InputStream stdout = process.getInputStream();
 	     BufferedReader reader = new BufferedReader(new InputStreamReader(stdout,StandardCharsets.UTF_8));

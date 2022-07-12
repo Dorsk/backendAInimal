@@ -78,34 +78,32 @@ public class ImagesAndLabelsController {
 		if(multipartFiles.length > 1 || (multipartFiles.length == 1 && !multipartFiles[0].getOriginalFilename().equals(""))) {
 			// recuperation du dossier de partage pour les images qui sont upload
 	        String uploadDir = context.getRealPath("shared");
-	        
+	        String uploadDirImages = context.getRealPath("shared")+ File.separator + "img";
 	        // recuperation des images et sauvegarder dans un dossier de partage
 			for (MultipartFile multipartFile : multipartFiles) {
 				String fileName = StringUtils.cleanPath(multipartFile.getOriginalFilename());
 		        try {
 		        	logger.info("-- Image name ---- : " + fileName);
-					FileUploadUtil.saveImagesFile(uploadDir, fileName, multipartFile);
+					FileUploadUtil.saveImagesFile(uploadDirImages, fileName, multipartFile);
 				} catch (IOException e) {
 					logger.error("-- FileUploadUtil.saveFile() failed ", e);
 				}
 			} 
 			
 			// creer fichier txt des labels
-			
 			try {
 				FileUploadUtil.saveLabelsFile(uploadDir, "labels-origin.txt", listLabels);
-				logger.info("-- File name ---- : labels-origin.txt");
+				logger.info("-- Nouveau fichiers ---- : labels-origin.txt  et labels.txt");
 			} catch (IOException e) {
 				logger.error("-- FileUploadUtil.saveLabelsFile() failed ", e);
 			}
 			
-			// lancer le script python
-			
+			// lancer les scripts python 
 			logger.info("-- Préparation scripts ---- ");
 			try {
 				String sScript = context.getRealPath("scripts");
 				sScript = sScript + File.separator + "csv_creation.py"; 
-				PythonUtil.execScript(sScript, uploadDir, -1);
+				PythonUtil.execScript(sScript,uploadDirImages, -1);
 				
 				sScript = context.getRealPath("scripts");
 				String sScript2 = sScript + File.separator + "entropy.py";
@@ -131,7 +129,7 @@ public class ImagesAndLabelsController {
 	public ModelAndView getUpdateLabel(@RequestParam("photo") String sPhoto, @RequestParam("submit") String sSubmit) {
 		List <String> listLabels = new ArrayList<>();
 		Map<String, Integer> mapLabelNumber = new HashMap<>();
-		String sFilePath = context.getRealPath("shared") + File.separator + ".." + File.separator + "labels-origin.txt";
+		String sFilePath = context.getRealPath("shared") + File.separator + "labels-origin.txt";
 		String sFilePathNumber = context.getRealPath("shared") + File.separator + "labels.txt";
 		// update fichier img;label
 		
