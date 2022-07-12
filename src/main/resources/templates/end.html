@@ -12,24 +12,14 @@
 		         <!--  Div LEFT SIDE -->
 		         <div class="column2"> 
 		         	<div id="object1"><h1>Active Learner</h1></div>
-		         	
-	    			<img class="d-block w-100" th:src="@{${'/shared/img/' + photo}}" th:alt="${photo}">
+		         	 
 		         </div>
 										 
 	
 		         <!--  Div RIGHT SIDE  -->
 		         <div class="column1">
-		         	<h2>Choisissez un label pour l'image</h2>
-					<div> 
-					 <form th:action="@{/updateLabel}" method="get">
-						<ul>
-							<input th:id="pathImage" type="hiden" th:name="photo" th:value="${photo}" />
-							<div th:each="label: ${labels}">
-								<button type="submit" th:text="${label}" th:name="submit" th:value="${label}"  class="btn btn-primary"></button>
-							</div> 
- 						</ul>
-					</form>
-					</div>
+		         	<h2>Plus d'images</h2>
+					 
 		 		</div>	
 	 		
 	 	</div>

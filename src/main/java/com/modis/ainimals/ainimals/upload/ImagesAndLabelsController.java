@@ -131,6 +131,7 @@ public class ImagesAndLabelsController {
 		Map<String, Integer> mapLabelNumber = new HashMap<>();
 		String sFilePath = context.getRealPath("shared") + File.separator + "labels-origin.txt";
 		String sFilePathNumber = context.getRealPath("shared") + File.separator + "topEntropy.txt";
+		String sNextImage = null;
 		// update fichier img;label
 		
 		// recuperer la liste des labels ayant était saisie par l'utilisateur la première fois  
@@ -148,16 +149,18 @@ public class ImagesAndLabelsController {
 			logger.error("-- ImagesAndLabelsController.updateLabel() failed ", e);
 		}
 		
-	    // TODO : ajouter le label au fichier labels.txt et trouve la prochaine image
-		 try {
-		        // input the file content to the StringBuffer "input"
+	    // ajouter le label au fichier labels.txt et trouver la prochaine image
+		 try { 
 		        BufferedReader file = new BufferedReader(new FileReader(sFilePathNumber));
 		        StringBuffer inputBuffer = new StringBuffer();
 		        String line;
 
 		        while ((line = file.readLine()) != null) {
-		        	if(line.contains(sPhoto)) {
-		        		line = line + mapLabelNumber.get(sSubmit);
+		        	if(line.contains(sPhoto)) { // trouve l'image qui aura le label
+		        		line = line + "," + mapLabelNumber.get(sSubmit);
+		        	} 
+		        	else if (!line.contains(",")) { // trouve la prochaine image à labeliser
+		        		sNextImage = line;
 		        	}
 		            inputBuffer.append(line);
 		            inputBuffer.append('\n');
@@ -175,10 +178,16 @@ public class ImagesAndLabelsController {
 		    }
 		
 		// charger une autre image avec les labels si besoin
-		ModelAndView modelView = new ModelAndView("loading");
-		modelView.addObject("labels", listLabels);
-//		modelView.addObject("photo", photo); // TODO un nouveau chemin lu dans le fichier labels.txt sans label
-		return modelView;
+		if (sNextImage==null) {
+			ModelAndView modelView = new ModelAndView("end"); 
+			return modelView;
+		} else {
+			ModelAndView modelView = new ModelAndView("updateLabel");
+			File image = new File(sNextImage);
+			modelView.addObject("labels", listLabels);
+			modelView.addObject("photo", image.getName()); 
+			return modelView;
+		}
 	}
 
 }
