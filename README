@@ -1,0 +1,51 @@
+
+
+url : localhot:8080/ainimals 
+		correspond à l'index et la page index.html
+		
+	 localhot:8080/ainimals/upload
+ 		Quand l'utilisateur clique sur le bouton "Envoyer", les images sont upload et les labels conservés
+ 		class : ImagesAndLabelsController
+ 				@PostMapping("/upload")
+				public ModelAndView uploadImage(.....)
+				
+ 	localhot:8080/ainimals/uploadLabel
+ 		permet de donner des labels aux images 1 par 1
+ 		Page HTML : updateLabels.html
+ 		class : ImagesAndLabelsController
+ 				@GetMapping("/updateLabel")
+				public ModelAndView getUpdateLabel(.....)
+				
+	localhot:8080/ainimals/end
+		Quand il y a plus d'image à labeliser
+		Page HTML : end.html
+
+
+Serveur TOMCAT
+
+   /ainimals
+   	|
+   	|
+   	|_____-META-INF (créer avec maven -build-install)
+   	|
+   	|
+   	|_____-WEB-INF (créer avec maven -build-install)
+   	|
+   	|
+   	|____-scripts
+   	|	 |label.txt
+   	|	 |label-origin.txt
+   	|	 |img (dossier des images upload)
+   	|	 |pool.csv
+   	|	 |train.csv
+   	|	 |topEntropy.txt
+   	|	 |
+   	|_____-shared
+   	|	 |
+   	|	 |label.txt
+   	|	 |label-origin.txt
+   	|	 |img (dossier des images upload)
+   	|	 |pool.csv
+   	|	 |train.csv
+   	|	 |topEntropy.txt
+   	|	 |

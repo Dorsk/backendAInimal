@@ -27,9 +27,9 @@ public class FileUploadUtil {
             MultipartFile multipartFile) throws IOException {
 
         Path uploadPath = Paths.get(uploadDir);
-        if (Files.exists(uploadPath)) { // clean l'ancienne session
-            Files.delete(uploadPath);
-        }
+//        if (Files.exists(uploadPath)) { // clean l'ancienne session
+//            Files.delete(uploadPath);
+//        }
         if (!Files.exists(uploadPath)) {
             Files.createDirectories(uploadPath);
         }
@@ -43,9 +43,8 @@ public class FileUploadUtil {
     }
 
 	/**
-	 * Crée 2 fichiers 
-	 *  le premier contient la liste des noms que l'utilisateur a renseigné
-	 *  le 2eme contient une numérotation de label (le python attend ce fichier)
+	 * Crée 1 fichier 
+	 *  le premier contient la liste des noms que l'utilisateur a renseigné 
 	 *  
 	 * @param uploadDir
 	 * @param sFileName
@@ -67,14 +66,7 @@ public class FileUploadUtil {
 			fw.write(System.getProperty( "line.separator" ));
 		}
 		fw.close();
-		
-		// save simple label
-		FileWriter fw2 = new FileWriter(uploadDir + File.separator + "labels.txt");
-		for (int i = 0; i< listLabels.size(); i++) {
-			fw2.write(String.valueOf(i));
-			fw2.write(System.getProperty( "line.separator" ));
-		}
-		fw2.close();
+		 
 	}
 	
 }

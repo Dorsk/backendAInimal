@@ -48,13 +48,20 @@ public class PythonUtil {
 	     }
 	     InputStream stdout = process.getInputStream();
 	     BufferedReader reader = new BufferedReader(new InputStreamReader(stdout,StandardCharsets.UTF_8));
-	 
 	    int intCode = process.waitFor();
 	    // lecture du output du script
 	    String line = "";
 	    while ((line = reader.readLine()) != null) {
 	    	logger.info("-- Output Python | " + line); 
 	    }   
+	    
+	    InputStream errorStream = process.getErrorStream();
+	    reader = new BufferedReader(new InputStreamReader(errorStream,StandardCharsets.UTF_8));
+	    // lecture du output du script ERROR
+	    line = "";
+	    while ((line = reader.readLine()) != null) {
+	    	logger.error("-- Output Python | " + line); 
+	    }    
 	    intCode = process.waitFor();
 		return intCode;
     }
