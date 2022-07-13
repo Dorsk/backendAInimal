@@ -1,5 +1,13 @@
 
 
+Java 1.8.0_333   minimum
+Maven
+serveur    : TOMCAT
+Frontend   : Thymeleaf
+BackEnd    : springboot
+
+
+
 url : localhot:8080/ainimals 
 		correspond à l'index et la page index.html
 		
@@ -21,7 +29,7 @@ url : localhot:8080/ainimals
 		Page HTML : end.html
 
 
-Serveur TOMCAT
+Serveur TOMCAT // Thymeleaf // springboot
 
    /ainimals
    	|

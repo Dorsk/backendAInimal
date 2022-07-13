@@ -192,6 +192,12 @@ public class ImagesAndLabelsController {
 				logger.info("-- ImagesAndLabelsController.updateLabel() - START - PythonUtil.execScript label.py ");
 				PythonUtil.execScript(sScript, null, -1);
 				logger.info("-- ImagesAndLabelsController.updateLabel() - END -  PythonUtil.execScript label.py ");
+				int lineNumberPool = countLinesPool(); 
+				if (lineNumberPool==0) { // fin des labels
+					ModelAndView modelView = new ModelAndView("end"); 
+					return modelView;
+				}
+				
 				sScript = context.getRealPath("scripts") + File.separator + "entropy.py"; 
 				logger.info("-- ImagesAndLabelsController.updateLabel() - START - PythonUtil.execScript entropy.py ");
 				PythonUtil.execScript(sScript, null, lineNumberLabel); 
@@ -200,11 +206,11 @@ public class ImagesAndLabelsController {
 				// reset du fichier label
 				File newFile = new File(Paths.get(context.getRealPath("shared")) + File.separator + "label.txt");
 	            newFile.delete();
-	            newFile.createNewFile();
+	            newFile.createNewFile(); 
 	            
 		        lineNumberLabel = countLinesLabels();
 		        lineNumberEntropy = countLinesEntropy(); 
-		        int lineNumberPool = countLinesPool(); 
+		        lineNumberPool = countLinesPool(); 
 				if (lineNumberPool==0) { // fin des labels
 					ModelAndView modelView = new ModelAndView("end"); 
 					return modelView;
