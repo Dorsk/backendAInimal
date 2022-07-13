@@ -27,8 +27,8 @@ data = pd.DataFrame(labels)
 
 train = pd.concat([train, data])
 
-for path in paths:
-    pool.drop(np.where(pool['path'] == path)[0][0], inplace = True )
+#for path in paths:
+#   pool.drop(np.where(pool['path'] == path)[0][0], inplace = True )
 
 train.to_csv(str(mainDir)+'/shared/train.csv', index=False)
 pool.to_csv(str(mainDir)+'/shared/pool.csv', index=False)
