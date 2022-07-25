@@ -41,13 +41,8 @@ Serveur TOMCAT // Thymeleaf // springboot
    	|
    	|
    	|____-scripts
-   	|	 |label.txt
-   	|	 |label-origin.txt
-   	|	 |img (dossier des images upload)
-   	|	 |pool.csv
-   	|	 |train.csv
-   	|	 |topEntropy.txt
    	|	 |
+	|
    	|_____-shared
    	|	 |
    	|	 |label.txt
